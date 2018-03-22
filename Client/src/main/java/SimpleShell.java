@@ -59,14 +59,18 @@ public class SimpleShell {
                 // Specific Commands.
 
                 // ids
-                if (list.contains("ids")) {
-                    String results = webber.get_ids();
-                    SimpleShell.prettyPrint(results);
+                if (list.get(0).equals("ids")) {
+                    if (list.size() > 1){
+                        webber.postID(list.get(1), list.get(2));
+                    } else {
+                        String results = webber.get_ids();
+                        SimpleShell.prettyPrint(results);
+                    }
                     continue;
                 }
 
                 // messages
-                if (list.contains("messages")) {
+                if (list.get(0).equals("messages")) {
                     String results = webber.get_messages();
                     SimpleShell.prettyPrint(results);
                     continue;

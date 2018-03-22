@@ -45,4 +45,10 @@ public class Messages {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString(){
+        return "\n\nSequence = " + sequence + "\nTime Stamp = " + timestamp + "\nFrom Id = " + fromid + "\nTo Id = " + toid
+                + "\nMessage = " + message;
+    }
 }

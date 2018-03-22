@@ -27,4 +27,9 @@ public class IDs {
     public void setGithub(String github) {
         this.github = github;
     }
+
+    @Override
+    public String toString(){
+        return "\n\nUserId = " + userid + "\nName = " + name + "\nGitHub = " + github;
+    }
 }
