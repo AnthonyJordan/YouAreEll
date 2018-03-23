@@ -71,11 +71,38 @@ public class SimpleShell {
 
                 // messages
                 if (list.get(0).equals("messages")) {
-                    String results = webber.get_messages();
-                    SimpleShell.prettyPrint(results);
+                    if (list.size() >1) {
+                        String results = webber.get_messagesForId(list.get(1));
+                        SimpleShell.prettyPrint(results);
+                    } else {
+                        String results = webber.get_messages();
+                        SimpleShell.prettyPrint(results);
+                    }
                     continue;
                 }
+
                 // you need to add a bunch more.
+                if (list.get(0).equals("send") && list.get(list.size()-2).equals("to")) {
+                    StringBuilder message = new StringBuilder();
+                    System.out.println("Test");
+                    for (int i = 2; i < list.size()-2; i++){
+                        message.append(list.get(i) + " ");
+                    }
+                    String results = webber.sendMessageToId(list.get(1), message.toString(), list.get(list.size()-1));
+                    SimpleShell.prettyPrint(results);
+                    continue;
+                }else if (list.get(0).equals("send")) {
+                    System.out.println("test2");
+                    if (list.size() >1) {
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 2; i < list.size(); i++){
+                            message.append(list.get(i) + " ");
+                        }
+                        String results = webber.sendMessage(list.get(1), message.toString());
+                        SimpleShell.prettyPrint(results);
+                    }
+                    continue;
+                }
 
                 //!! command returns the last command in history
                 if (list.get(list.size() - 1).equals("!!")) {
