@@ -35,14 +35,14 @@ public class YouAreEll {
     }
 
     public String get_messages() {
-        ObjectMapper jsonMapper = new ObjectMapper();
         String jsonString = MakeURLCall("/messages", "GET", "");
-        String last20 = convertMessagesToString(jsonMapper, jsonString);
+        String last20 = convertMessagesToString(jsonString);
         if (last20 != null) return last20;
         return null;
     }
 
-    private String convertMessagesToString(ObjectMapper jsonMapper, String jsonString) {
+    private String convertMessagesToString(String jsonString) {
+        ObjectMapper jsonMapper = new ObjectMapper();
         try {
             Messages[] messagesList = jsonMapper.readValue(jsonString, Messages[].class);
             if (messagesList!=null) {
@@ -55,10 +55,22 @@ public class YouAreEll {
         return null;
     }
 
-    public String get_messagesForId(String id) {
+    private String convertSingeMessageToString(String jsonString) {
         ObjectMapper jsonMapper = new ObjectMapper();
+        try {
+            Messages message = jsonMapper.readValue(jsonString, Messages.class);
+            Messages[] messages = new Messages[1];
+            messages[0] = message;
+            return getRidOfNulls(messages);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public String get_messagesForId(String id) {
         String jsonString = MakeURLCall("/ids/"+id+"/messages", "GET", "");
-        String last20 = convertMessagesToString(jsonMapper, jsonString);
+        String last20 = convertMessagesToString(jsonString);
         if (last20 != null) return last20;
         return null;
     }
@@ -66,13 +78,15 @@ public class YouAreEll {
     public String sendMessage(String id, String message){
         String jsonPackage = "{ \"sequence\": \"-\", \"timestamp\": \"2018-03-21T01:00:00.0Z\", \"fromid\": \"" +id + "\"," +
                 "\"toid\": \"\", \"message\": \"" + message + "\"}";
-        return MakeURLCall("/ids/" + id + "/messages", "PUT", jsonPackage);
+        String returnedMessage = MakeURLCall("/ids/" + id + "/messages", "PUT", jsonPackage);
+        return convertSingeMessageToString(returnedMessage);
     }
 
     public String sendMessageToId(String fromId, String message, String toId){
         String jsonPackage = "{ \"sequence\": \"-\", \"timestamp\": \"2018-03-21T01:00:00.0Z\", \"fromid\": \"" + fromId + "\"," +
                 "\"toid\": \""+toId+ "\", \"message\": \"" + message + "\"}";
-        return MakeURLCall("/ids/" + fromId + "/messages", "PUT", jsonPackage);
+        String returnedString = MakeURLCall("/ids/" + fromId + "/messages", "PUT", jsonPackage);
+        return convertSingeMessageToString(returnedString);
     }
 
     public String MakeURLCall(String mainurl, String method, String jpayload) {

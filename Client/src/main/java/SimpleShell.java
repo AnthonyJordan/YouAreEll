@@ -84,7 +84,6 @@ public class SimpleShell {
                 // you need to add a bunch more.
                 if (list.get(0).equals("send") && list.get(list.size()-2).equals("to")) {
                     StringBuilder message = new StringBuilder();
-                    System.out.println("Test");
                     for (int i = 2; i < list.size()-2; i++){
                         message.append(list.get(i) + " ");
                     }
@@ -92,7 +91,6 @@ public class SimpleShell {
                     SimpleShell.prettyPrint(results);
                     continue;
                 }else if (list.get(0).equals("send")) {
-                    System.out.println("test2");
                     if (list.size() >1) {
                         StringBuilder message = new StringBuilder();
                         for (int i = 2; i < list.size(); i++){
