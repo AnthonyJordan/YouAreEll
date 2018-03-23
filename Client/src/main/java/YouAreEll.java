@@ -59,9 +59,7 @@ public class YouAreEll {
         ObjectMapper jsonMapper = new ObjectMapper();
         try {
             Messages message = jsonMapper.readValue(jsonString, Messages.class);
-            Messages[] messages = new Messages[1];
-            messages[0] = message;
-            return getRidOfNulls(messages);
+            return message.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
